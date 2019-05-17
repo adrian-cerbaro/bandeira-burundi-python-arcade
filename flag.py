@@ -3,10 +3,12 @@ import math
 
 
 def draw(pos_x, pos_y, w):
+    pos_x, pos_y = math.floor(pos_x), math.floor(pos_y)
+
     # Propriedades da bandeira
     proportion = 3 / 5  # Proporção da bandeira
-    width = w  # Largura da bandeira
-    height = w * proportion  # Comprimento da bandeira
+    width = math.floor(w)  # Largura da bandeira
+    height = math.floor(width * proportion)  # Comprimento da bandeira
 
     # Correção de altura
     ######################################
@@ -14,29 +16,29 @@ def draw(pos_x, pos_y, w):
     ######################################
 
     # Calcula a posição x relativo a bandeira
-    def x(pos):
+    def x(pos=0):
         return pos_x + pos
 
     # Calcula a posição y relativo a bandeira
-    def y(pos):
+    def y(pos=0):
         return pos_y + pos
 
     # Retorna o valor proporcional a largura da bandeira
     def sw(var):
-        return (var / 100) * width
+        return math.floor((var / 100) * width)
 
     # Retorna o valor proporcional a altura da bandeira
     def sh(var):
-        return (var / 100) * height
+        return math.floor((var / 100) * height)
 
     # Utils
     #########################################
-    x_center = x(width / 2)
-    y_center = y(height / 2)
+    x_center = x(round(width / 2))
+    y_center = y(round(height / 2))
     right = x(width)
-    left = x(0)
+    left = x()
     top = y(height)
-    bottom = y(0)
+    bottom = y()
     ###########################################
 
     # Cores da bandeira
@@ -45,21 +47,20 @@ def draw(pos_x, pos_y, w):
     white_color = (255, 255, 255)
 
     # Cria base da bandeira
-    arcade.draw_rectangle_filled(x_center, y_center, width, height, white_color)
+    arcade.draw_xywh_rectangle_filled(left, bottom, width, height, white_color)
 
     # Line stroke
-    line_stroke = 15.3
-    correction = 0.75
+    line_stroke = 15
 
     # Triangulos do fundo
     #############################################
 
     # Verticais
-    arcade.draw_triangle_filled(x(sw(line_stroke / 2)), y(-correction), x_center, y_center - sh(line_stroke / 2),
-                                right - sw(line_stroke / 2), y(-correction), red_color)
+    arcade.draw_triangle_filled(x(sw(line_stroke / 2)), bottom, x_center, y_center - sh(line_stroke / 2),
+                                right - sw(line_stroke / 2), bottom, red_color)
 
-    arcade.draw_triangle_filled(x(sw(line_stroke / 2)), y(height + correction), x_center, y_center + sh(line_stroke / 2),
-                                right - sw(line_stroke / 2), y(height + correction), red_color)
+    arcade.draw_triangle_filled(x(sw(line_stroke / 2)), top, x_center, y_center + sh(line_stroke / 2),
+                                right - sw(line_stroke / 2), top, red_color)
 
     # Laterais
     arcade.draw_triangle_filled(left, y(sh(line_stroke/2)), x_center - sw(line_stroke/2), y_center,
@@ -76,7 +77,7 @@ def draw(pos_x, pos_y, w):
     # Estrelas
     ############################################
     stars_radius = circle_radius/1.12
-    star_size = sw(5.5)
+    star_size = sw(5.6)
     star_border = sw(1.3)
     for vert in get_eq_triangle_vertices(x_center, y_center, stars_radius):
         x, y = vert
