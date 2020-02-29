@@ -1,5 +1,4 @@
 # Nome: Adrian Cerbaro
-# Matrícula: 178304
 # País Selecionado: Burundi
 
 import arcade
